@@ -1,0 +1,190 @@
+:root {
+    --primary: #aed581;
+    --p_light: #e1ffb1;
+    --p_dark: #6b9b37;
+    --secondary: #4fc3f7;
+    --s_light: #8bf6ff;
+    --s_dark: #0093c4;
+    --error: #B00020;
+}
+
+html * {
+    font-family: "Open Sans", sans-serif;
+}
+
+input[type=radio]:disabled + label{
+    text-decoration: line-through;
+}
+
+.user {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info {
+    max-width: 100%;
+    height: auto;
+}
+
+.fa {
+  padding: 15px;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.fa-instagram {
+  background: #125688;
+  color: white;
+}
+
+.fa-google {
+  background: #dd4b39;
+  color: white;
+}
+
+.ig-name {
+  background: #125688;
+  color: white;
+}
+
+.fa:visited {
+    color:white;
+}
+
+.fa:hover {
+    color:white;
+}
+
+.h-info {
+    padding-bottom: 8px;
+    display: inline-block;
+    width: auto;
+    border-bottom: 4px var(--primary) solid;
+    font-family: "Roboto Condensed", serif;
+}
+
+.h-home {
+    font-weight: bold;
+}
+
+.navbar-brand {
+    font-family: "Roboto Condensed", sans-serif;
+    color: black;
+}
+
+.navbar-brand:hover {
+    color: black;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    color: rgba(0, 0, 0, .5);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.form-check-input:checked {
+    border-color: var(--secondary);
+    background-color: var(--secondary);
+}
+
+.form-check-input:focus {
+  border-color: var(--secondary);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(79, 195, 247, 0.5);
+}
+
+.btn-regular {
+    color: #fff;
+    background-color: var(--p_dark);
+    border-color: var(--p_dark);
+}
+
+.my-nav {
+    background-color: var(--primary);
+    -webkit-box-shadow: 0px -13px 15px 10px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px -13px 15px 10px rgba(0,0,0,0.75);
+    box-shadow: 0px -13px 10px 10px rgba(0,0,0,0.75);
+}
+
+.btn-red {
+    color: #fff;
+    background-color: var(--error);
+    border-color: var(--error);
+}
+.btn-red:focus {
+    box-shadow: 0 0 0 0.25rem rgba(225, 83, 97, 0.5);
+}
+
+.btn-update {
+    color: #fff;
+    background-color: var(--s_dark);
+    border-color: var(--s_dark);
+}
+
+.btn-regular:focus {
+    box-shadow: 0 0 0 0.25rem rgba(107, 155, 55, 0.5);
+}
+
+.btn-update:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 147, 196, 0.5);
+}
+
+.btn-red:focus {
+    box-shadow: 0 0 0 0.25rem rgba(176, 0, 32, 0.5);
+}
+
+.btn-social {
+  width: 14em;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.btn-social:hover {
+  opacity: 1;
+  color: #fff;
+}
+
+.fb {
+  background-color: #3B5998;
+  color: white;
+}
+
+.google {
+  background-color: #dd4b39;
+  color: white;
+}
+
+.ck-button {
+    background-color:#EFEFEF;
+    border-radius:4px;
+    overflow:auto;
+    display: inline-block;
+    margin: 0px 1px;
+}
+
+.ck-button label span {
+    text-align:center;
+    padding:3px 3px;
+    display:block;
+    font-size: 1.17em;
+}
+
+.ck-button input:checked + span {
+    background-color:var(--s_dark);
+    color:#fff;
+}
+

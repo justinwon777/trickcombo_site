@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}
+Combo Editor
+{% endblock %}
+{% block content %}
+<div class="container pt-3">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center" style="font-weight: bold">Combo Editor</h3>
+            <h4 class="h-home">Trick Sets</h4>
+            <form id="trick_set" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="radio" name="set_name" value="all"> All Tricks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="lk_funds"> Loopkicks Top 10 Fundamental Tricks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="vert"> Vertical Kicks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="common" checked> Common<br>
+                <input class="form-check-input" type="radio" name="set_name" value="challenge"> Challenge<br>
+                <input class="form-check-input" type="radio" name="set_name" value="custom"> Custom Set<br>
+                {% if user.is_authenticated %}
+                    {% for set in set_names %}
+                        <input class="form-check-input" type="radio" name="set_name" value="{{set}}"> {{set}}<br>
+                    {% endfor %}
+                {% else %}
+                    <p class="pt-1">Login to see your sets.</p>
+                {% endif %}
+            </form>
+            <br>
+            <button class="btn btn-regular" disabled type="button" data-bs-toggle="collapse" data-bs-target="#custom_collapse" aria-expanded="false" aria-controls="custom_collapse" id="pick_tricks">
+                Pick Tricks
+            </button>
+            <div class="collapse" id="custom_collapse">
+                <div class="card card-body">
+                    {% include 'comboapp/custom_set.html' %}
+                </div>
+            </div>
+            <h4 class="mt-3 h-home">Stances</h4>
+            <form id="stanceset" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="checkbox" name="stance" value="complete" id="complete" checked> Complete <br>
+                <input class="form-check-input" type="checkbox" name="stance" value="hyper" id="hyper"> Hyper <br>
+                <input class="form-check-input" type="checkbox" name="stance" value="mega" id="mega"> Mega <br>
+                <input class="form-check-input" type="checkbox" name="stance" value="semi" id="semi"> Semi
+            </form>
+            <h4 class="mt-3 h-home">Transitions</h4>
+            <form id="transitionset" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="checkbox" name="transition" value="punch" id="punch" checked> Punch
+                <input class="form-check-input" type="checkbox" name="transition" value="pop" id="pop" checked> Pop
+                <input class="form-check-input" type="checkbox" name="transition" value="backside" id="backside" checked> Backside
+                <input class="form-check-input" type="checkbox" name="transition" value="vanish" id="vanish" checked> Vanish
+                <input class="form-check-input" type="checkbox" name="transition" value="redirect" id="redirect" checked> Redirect
+                <input class="form-check-input" type="checkbox" name="transition" value="reversal" id="reversal" checked> Reversal
+                <input class="form-check-input" type="checkbox" name="transition" value="swing" id="swing" checked> Swing
+                <input class="form-check-input" type="checkbox" name="transition" value="wrap" id="wrap" checked> Wrap
+                <input class="form-check-input" type="checkbox" name="transition" value="front" id="frontswing" checked> Frontswing
+                <input class="form-check-input" type="checkbox" name="transition" value="miss" id="missleg" checked> Missleg
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container pt-3 text-center">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-regular btn-lg mt-2" id="load_combo">Load Saved Combo</button>
+            <h3 class="my-3" id="combo"></h3>
+            <p hidden id="save_max" class="text-danger">Maximum 15 combos allowed.</p>
+            <button type="button" class="btn btn-secondary" id="copy" onclick="copyCombo('#combo')" title="Copied">Copy Combo</button>
+            <button type="button" class="btn btn-secondary" id="save" >Save Combo</button>
+            <br>
+            <form id="full" method="post" class="mt-3">
+              {% csrf_token %}
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="combo_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Pick a combo
+            </h5>
+        </div>
+      <div class="modal-body">
+          {% if user.is_authenticated %}
+            {% for combo in saved_combos %}
+                <input class="form-check-input" type="radio" name="saved_combo" value="{{combo}}" checked> {{combo}}<br>
+            {% endfor %}
+          {% else %}
+            Login to see your combos.
+          {% endif %}
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-regular" data-bs-dismiss="modal" id="confirm_load_combo">Load Combo</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

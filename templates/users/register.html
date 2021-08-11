@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% providers_media_js %}
+{% block title %}
+Register
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <a href="{% provider_login_url "google" %}" class="google btn-social">
+              <i class="fa fa-google fa-fw"></i> Sign up with Google
+            </a>
+            <a href="{% provider_login_url "facebook" method="oauth2" %}" class="fb btn-social">
+              <i class="fa fa-facebook fa-fw"></i> Sign up with Facebook
+            </a>
+            <form method="post">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-update" type="submit">Sign Up</button>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    Already have an account?
+                    <a href="/login" class="ml-2">Sign In</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

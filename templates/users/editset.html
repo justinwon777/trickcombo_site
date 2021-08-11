@@ -1,0 +1,85 @@
+<div class="container">
+    <small id="curr_set"></small>
+  <nav id="navbar-example" class="navbar navbar-expand-sm navbar-light bg-light px-3">
+    <span class="navbar-brand">Categories</span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#trick_menu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="trick_menu">
+        <ul class="navbar-nav mt-1">
+            <li class="nav-item">
+                <a class="nav-link" href="#vertkicks_edit">Vertical Kicks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#flatspin_edit">Flatspin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#backward_edit">Backward</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#forward_edit">Forward</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#outside_edit">Outside</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#inside_edit">Inside</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#other_edit">Other</a>
+            </li>
+        </ul>
+    </div>
+    </nav>
+    <form method="post" id="edit_search">
+        {% csrf_token %}
+        <input class="form-control mt-2 mb-2" type="search" placeholder="Search Tricks" id="search_edit">
+    </form>
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example" style='max-height: 400px; overflow: auto'>
+        <form id="trickset2" class="mb-1" method="post">
+            {% csrf_token %}
+            <h4 id="vertkicks_edit">Vertical Kicks</h4>
+            {% for trick in vertkick %}
+            <input class="form-check-input text-primary" type="checkbox" name="trick2" value="{{trick}}" id="e{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+            <h4 id="flatspin_edit">Flatspin</h4>
+            {% for trick in flat %}
+            <input class="form-check-input" type="checkbox" name="trick2" value="{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+            <h4 id="backward_edit">Backward</h4>
+            {% for trick in back %}
+            <input class="form-check-input" type="checkbox" name="trick2" value="{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+            <h4 id="forward_edit">Forward</h4>
+            {% for trick in forward %}
+            <input class="form-check-input" type="checkbox" name="trick2" value="{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+            <h4 id="outside_edit">Outside</h4>
+            {% for trick in outside %}
+            <input class="form-check-input" type="checkbox" name="trick2" value="{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+            <h4 id="inside_edit">Inside</h4>
+            {% for trick in inside %}
+            <input class="form-check-input" type="checkbox" name="trick2" value="{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+            <h4 id="other_edit">Other</h4>
+            {% for trick in other %}
+            <input class="form-check-input" type="checkbox" name="trick2" value="{{trick}}">
+            <label for="e{{trick}}">{{trick}}</label>
+            <br>
+            {% endfor %}
+        </form>
+    </div>
+</div>

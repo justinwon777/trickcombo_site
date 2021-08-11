@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}
+Combo Builder
+{% endblock %}
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <h3 class="text-center" style="font-weight: bold">Combo Builder</h3>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h4 class="h-home">Trick Sets</h4>
+            <form id="trick_set" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="radio" name="set_name" value="all" checked> All Tricks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="lk_funds"> Loopkicks Top 10 Fundamental Tricks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="vert"> Vertical Kicks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="common"> Common<br>
+                <input class="form-check-input" type="radio" name="set_name" value="challenge"> Challenge<br>
+                {% if user.is_authenticated %}
+                    {% for set in set_names %}
+                        <input class="form-check-input" type="radio" name="set_name" value="{{set}}"> {{set}}<br>
+                    {% endfor %}
+                {% else %}
+                    <p class="pt-1">Login to see your sets.</p>
+                {% endif %}
+            </form>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            {% include 'comboapp/starting_trick.html' %}
+        </div>
+        <div class="col-md">
+            <h4 class="mt-3 h-home">Stances</h4>
+            <form id="stanceset2" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="radio" name="stance2" value="complete" id="complete2" disabled>
+                <label for="complete2">Complete</label>
+                <br>
+                <input class="form-check-input" type="radio" name="stance2" value="hyper" id="hyper2" disabled>
+                <label for="hyper2">Hyper</label>
+                <br>
+                <input class="form-check-input" type="radio" name="stance2" value="mega" id="mega2" disabled>
+                <label for="mega2">Mega</label>
+                <br>
+                <input class="form-check-input" type="radio" name="stance2" value="semi" id="semi2" disabled>
+                <label for="semi2">Semi</label>
+            </form>
+        </div>
+        <div class="col-md">
+            <h4 class="mt-3 h-home">Transitions</h4>
+            <form id="transitionset2" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="radio" name="transition2" value="punch" id="punch2" disabled>
+                <label for="punch2">Punch</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="pop" id="pop2" disabled>
+                <label for="pop2">Pop</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="backside" id="backside2" disabled>
+                <label for="pop2">Backside</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="vanish" id="vanish2" disabled>
+                <label for="vanish2">Vanish</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="redirect" id="redirect2" disabled>
+                <label for="redirect2">Redirect</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="reversal" id="reversal2" disabled>
+                <label for="reversal2">Reversal</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="swing" id="swing2" disabled>
+                <label for="swing2">Swing</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="wrap" id="wrap2" disabled>
+                <label for="wrap2">Wrap</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="frontswing" id="frontswing2" disabled>
+                <label for="front2">Frontswing</label>
+                <br>
+                <input class="form-check-input" type="radio" name="transition2" value="missleg" id="missleg2" disabled>
+                <label for="miss2">Missleg</label>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col text-center">
+            <p hidden id="trick_error" class="text-danger">Make sure a trick and stance are selected</p>
+            <p hidden id="trans_error" class="text-danger">Make sure a transition is selected</p>
+            <button type="button" class="btn btn-regular" id="add_trick">Add trick + stance</button>
+            <button type="button" class="btn btn-regular" id="add_trans" disabled>Add transition</button>
+            <button type="button" class="btn btn-red" id="reset">Reset</button>
+            <h3 class="my-3" id="short"></h3>
+            <button class="btn btn-regular mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#full_combo" aria-expanded="false" aria-controls="full_combo">
+                Show Full Combo
+            </button>
+            <br><br>
+            <div class="collapse" id="full_combo">
+              <div class="card card-body" id="full_card"><h3 id="made_combo"></h3></div>
+            </div>
+            <p hidden id="save_max" class="text-danger">Maximum 15 combos allowed.</p>
+            <button type="button" class="btn btn-secondary" id="copy" onclick="copyCombo('#short')" title="Copied">Copy Combo</button>
+            <button type="button" class="btn btn-secondary" id="save_build" >Save Combo</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

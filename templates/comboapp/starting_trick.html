@@ -1,0 +1,112 @@
+<div class="container" xmlns="http://www.w3.org/1999/html">
+  <nav id="start_nav" class="navbar navbar-expand-sm navbar-light bg-light px-3">
+    <span class="navbar-brand">Categories</span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#start_trick_menu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="start_trick_menu">
+        <ul class="navbar-nav mt-1">
+            <li class="nav-item">
+                <a class="nav-link" href="#vertkicks_start">Vertical Kicks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#flatspin_start">Flatspin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#backward_start">Backward</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#forward_start">Forward</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#outside_start">Outside</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#inside_start">Inside</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#other_start">Other</a>
+            </li>
+        </ul>
+    </div>
+    </nav>
+    <form method="post" id="starting_search">
+        {% csrf_token %}
+        <input class="form-control mt-2 mb-2" type="search" placeholder="Search Tricks" id="search_starting">
+    </form>
+    <div data-bs-spy="scroll" data-bs-target="#start_nav" style='max-height: 400px; overflow: auto'>
+        <form id="trickset2" class="mb-1" method="post">
+            {% csrf_token %}
+            <h4 id="vertkicks_start">Vertical Kicks</h4>
+            <div class="vertkicks_list">
+                {% for trick in vertkick %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}" id="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <h4 id="flatspin_start">Flatspin</h4>
+            <div class="flatspin_list">
+                {% for trick in flat %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <h4 id="backward_start">Backward</h4>
+            <div class="backward_list">
+                {% for trick in back %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <h4 id="forward_start">Forward</h4>
+            <div class="forward_list">
+                {% for trick in forward %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <h4 id="outside_start">Outside</h4>
+            <div class="outside_list">
+                {% for trick in outside %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <h4 id="inside_start">Inside</h4>
+            <div class="inside_list">
+                {% for trick in inside %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <h4 id="other_start">Other</h4>
+            <div class="other_list">
+                {% for trick in other %}
+                <div>
+                    <input class="form-check-input" type="radio" name="trick2" value="{{trick}}">
+                    <label for="{{trick}}">{{trick}}</label>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</div>

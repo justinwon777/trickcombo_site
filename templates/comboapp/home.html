@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% block title %}
+TrickCombo
+{% endblock %}
+{% block content %}
+<div class="container pt-3">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center" style="font-weight: bold">Combo Generator</h3>
+            <p class="bg-light">
+                First time? Check out the
+                <a href="/guide" style="text-decoration: none">guide</a>
+            </p>
+            <h4 class="h-home">Trick Sets</h4>
+            <form id="trick_set" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="radio" name="set_name" value="all"> All Tricks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="lk_funds"> Loopkicks Top 10 Fundamental Tricks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="vert"> Vertical Kicks<br>
+                <input class="form-check-input" type="radio" name="set_name" value="common" checked> Common<br>
+                <input class="form-check-input" type="radio" name="set_name" value="challenge"> Challenge<br>
+                <input class="form-check-input" type="radio" name="set_name" value="custom"> Custom Set<br>
+                {% if user.is_authenticated %}
+                    {% for set in set_names %}
+                        <input class="form-check-input" type="radio" name="set_name" value="{{set}}"> {{set}}<br>
+                    {% endfor %}
+                {% else %}
+                    <p class="pt-1"><strong>Login to see your saved sets.</strong></p>
+                {% endif %}
+            </form>
+            <br>
+            <button class="btn btn-regular" disabled type="button" data-bs-toggle="collapse" data-bs-target="#custom_collapse" aria-expanded="false" aria-controls="custom_collapse" id="pick_tricks">
+                Pick Tricks
+            </button>
+            <div class="collapse" id="custom_collapse">
+                <div class="card card-body">
+                    {% include 'comboapp/custom_set.html' %}
+                </div>
+            </div>
+            <h4 class="mt-3 h-home">Stances</h4>
+            <form id="stanceset" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="checkbox" name="stance" value="complete" id="complete" checked> Complete <br>
+                <input class="form-check-input" type="checkbox" name="stance" value="hyper" id="hyper"> Hyper <br>
+                <input class="form-check-input" type="checkbox" name="stance" value="mega" id="mega"> Mega <br>
+                <input class="form-check-input" type="checkbox" name="stance" value="semi" id="semi"> Semi
+            </form>
+            <h4 class="mt-3 h-home">Transitions</h4>
+            <form id="transitionset" method="post">
+                {% csrf_token %}
+                <input class="form-check-input" type="checkbox" name="transition" value="punch" id="punch" checked> Punch
+                <input class="form-check-input" type="checkbox" name="transition" value="pop" id="pop" checked> Pop
+                <input class="form-check-input" type="checkbox" name="transition" value="backside" id="backside" checked> Backside
+                <input class="form-check-input" type="checkbox" name="transition" value="vanish" id="vanish" checked> Vanish
+                <input class="form-check-input" type="checkbox" name="transition" value="redirect" id="redirect" checked> Redirect
+                <input class="form-check-input" type="checkbox" name="transition" value="reversal" id="reversal" checked> Reversal
+                <input class="form-check-input" type="checkbox" name="transition" value="swing" id="swing" checked> Swing
+                <input class="form-check-input" type="checkbox" name="transition" value="wrap" id="wrap" checked> Wrap
+                <input class="form-check-input" type="checkbox" name="transition" value="frontswing" id="frontswing" checked> Frontswing
+                <input class="form-check-input" type="checkbox" name="transition" value="missleg" id="missleg" checked> Missleg
+            </form>
+            <h4 class="mt-3 h-home">Combo Length</h4>
+            <select class="form-select" id="length" style="width: 70px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <div class="pt-3">
+                <h4 class="mt-3 h-home" style="display: inline; vertical-align: middle;">More Options</h4><br>
+                <p style="display: inline;" class="text-secondary">Starting and finishing trick cannot be combined</p>
+            </div>
+
+            <button class="btn btn-regular mt-2" type="button" id="start">
+                Starting Trick
+            </button>
+            <button class="btn btn-regular mt-2" type="button" id="finish">
+                Finishing Trick
+            </button>
+            <select class="form-select mt-2" id="spin_limit" style="width: 120px; display: inline-block">
+                <option value="none">Spin Limit</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+<div class="container text-center pt-3">
+    <div class="row">
+        <div class="col">
+            <p hidden id="start_fail" class="text-danger">Pick a starting trick that's in the selected trick set.</p>
+            <button type="button" class="btn btn-regular btn-lg mt-2" id="generate">Generate Combo</button>
+            <button type="button" class="btn btn-regular btn-lg mt-2" id="load_combo">Load Saved Combo</button>
+            <h3 class="my-3" id="combo"></h3>
+            <p hidden id="save_max" class="text-danger">Maximum 15 combos allowed.</p>
+            <button type="button" class="btn btn-secondary" id="copy" onclick="copyCombo('#combo')" title="Copied">Copy Combo</button>
+            <button type="button" class="btn btn-secondary" id="save" >Save Combo</button>
+            <br>
+            <form id="full" method="post" class="mt-3">
+              {% csrf_token %}
+            </form>
+            <p hidden id="regenerate_error" class="text-danger">Select a part.</p>
+            <button type="button" class="btn btn-regular mt-3" id="regenerate" style="width: fit-content;">Regenerate Selected Parts</button>
+            <br>
+            <button type="button" class="btn btn-regular mt-3" id="animation" style="width: fit-content;" onclick="createAnimation();">See Animation</button>
+            <br><br>
+        </div>
+    </div>
+</div>
+<div class="container pt-2 bg-light">
+    <div class="row">
+        <div class="col">
+            <h5>Check these tricktionaries to learn about a particular trick and see examples</h5>
+            <ul>
+                <li><a href="https://www.loopkickstricking.com/tricktionary" target="_blank" rel="noopener">loopkickstricking.com/tricktionary</a></li>
+                <li><a href="http://www.club540.com/tricktionary" target="_blank" rel="noopener">club540.com/tricktionary</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="combo_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Pick a combo
+            </h5>
+        </div>
+      <div class="modal-body">
+          {% if user.is_authenticated %}
+            {% for combo in saved_combos %}
+                <input class="form-check-input" type="radio" name="saved_combo" value="{{combo}}" checked> {{combo}}<br>
+            {% endfor %}
+          {% else %}
+            Login to see your combos.
+          {% endif %}
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-regular" data-bs-dismiss="modal" id="confirm_load_combo">Load Combo</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="start_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Pick a Starting Trick
+            </h5>
+        </div>
+      <div class="modal-body">
+          <button class="btn btn-red" type="button" style="width:70px" id="reset_start">Reset</button>
+            {% include 'comboapp/starting_trick.html' %}
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="finish_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Pick a Finishing Trick
+            </h5>
+        </div>
+      <div class="modal-body">
+          <button class="btn btn-red" type="button" style="width:70px" id="reset_finish">Reset</button>
+            {% include 'comboapp/finishing_trick.html' %}
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="animation_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Animation
+            </h5>
+        </div>
+      <div class="modal-body" id="animation-body">
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

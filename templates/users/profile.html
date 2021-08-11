@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Profile
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-auto">
+            <img class="user" src="{% static 'default.jpg' %}">
+        </div>
+        <div class="col">
+            <div class="container mt-4">
+                <h2 style="display: inline-block">{{user.first_name}}</h2>
+                <h2 style="display: inline-block">{{user.last_name}}</h2>
+                <p>{{ user.username}}</p>
+                <p class="text-secondary">{{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    {{ u_form|crispy }}
+                </fieldset>
+                <br>
+                <div class="form-group">
+                    <button class="btn btn-update" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h3>Saved Combos</h3>
+            <ul class="list-group" id="combo_list">
+                {% for combo in combos %}
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" name="combo_name" type="checkbox" value="{{combo}}">{{combo}}
+                </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <p hidden id="delete_combo_success" class="text-success">Combo deleted.</p>
+            <button class="btn btn-regular" type="button" id="add_combo" data-bs-toggle="collapse" data-bs-target="#add_collapse" aria-expanded="false" aria-controls="add_collapse">Add Combo</button>
+            <button type="button" class="btn btn-red" id="delete_combo" disabled>Delete Combo</button>
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    Are you sure you want to delete this combo?
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-regular" data-bs-dismiss="modal" id="confirm_delete_combo">Yes</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="collapse" id="add_collapse">
+                <br>
+                <p hidden id="save_max" class="text-danger">Maximum 15 combos allowed.</p>
+                <p hidden id="add_fail" class="text-danger">Make sure you typed a combo and it doesn't exist already.</p>
+                <p hidden id="add_success" class="text-success">Combo saved.</p>
+                <input type="text" id="new_combo" name="new_combo" placeholder="Type a combo">
+                <button type="submit" class="btn btn-regular" id="save_new_combo">Save Combo</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h3>Trick Wishlist</h3>
+            <p class="text-secondary" style="font-size: 16px">Tricks you want to practice.</p>
+            <ul class="list-group" id="trick_wishlist">
+                {% for trick in trick_wishlist %}
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" name="trick_name" type="checkbox" value="{{trick}}">{{trick}}
+                </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <p hidden id="delete_trick_success" class="text-success">Trick deleted.</p>
+            <button class="btn btn-regular" type="button" id="add_trick_wish" data-bs-toggle="collapse" data-bs-target="#add_trick_collapse" aria-expanded="false" aria-controls="add_trick_collapse">Add Trick</button>
+            <button type="button" class="btn btn-red" id="delete_trick_wish" disabled>Delete Trick</button>
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    Are you sure you want to delete this trick?
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-regular" data-bs-dismiss="modal" id="confirm_delete_trick">Yes</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="collapse" id="add_trick_collapse">
+                <br>
+                <p hidden id="save_trick_max" class="text-danger">Maximum 15 combos allowed.</p>
+                <p hidden id="add_trick_fail" class="text-danger">Make sure you typed a trick and it doesn't exist already.</p>
+                <p hidden id="add_trick_success" class="text-success">Trick saved.</p>
+                <input type="text" id="new_trick" name="new_combo" placeholder="Type a trick">
+                <button type="submit" class="btn btn-regular" id="save_new_trick">Save Trick</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h3>Your Trick Sets</h3>
+            <ul class="list-group" id="set_list">
+                {% for set in set_names %}
+                <li class="list-group-item">
+                    <input class="form-check-input me-1" name="set_name" type="checkbox" value="{{set.0}}"><span>{{set.0}}</span>
+                    <span style="float: right" class="text-secondary">
+                        {% if set.1 == 1 %}
+                            {{set.1}} trick
+                        {% else %}
+                            {{set.1}} tricks
+                        {% endif %}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+            <br>
+            <p hidden id="delete_success" class="text-success">Set deleted.</p>
+            <button class="btn btn-regular" type="button" id="create_set">Create Set</button>
+            <button type="button" class="btn btn-update" id="edit_set" disabled>Edit Set</button>
+            <button type="button" class="btn btn-red" id="delete_set" disabled>Delete Set</button>
+            <div class="collapse" id="create_collapse">
+                <div class="card card-body">
+                    {% include 'users/create_set.html' %}
+                </div>
+                <p hidden id="create_max" class="text-danger">Maximum 5 sets allowed.</p>
+                <p hidden id="create_fail" class="text-danger">At least 1 trick and a name are required. Name must not exist already.</p>
+                <p hidden id="create_success" class="text-success">Set created.</p>
+                <label for="create_set_name">Set Name:</label><br>
+                <input type="text" id="create_set_name" name="new_set_name">
+                <button type="submit" class="btn btn-regular" id="create_save_set">Save Set</button>
+            </div>
+            <div class="collapse" id="edit_collapse">
+                <div class="card card-body">
+                    {% include 'users/editset.html' %}
+                </div>
+                <p hidden id="edit_fail" class="text-danger">At least 1 trick and a name are required.</p>
+                <p hidden id="edit_success" class="text-success">Edits saved.</p>
+                <label for="edit_set_name">Set Name:</label><br>
+                <input type="text" id="edit_set_name" name="edit_set_name">
+                <button type="submit" class="btn btn-regular" id="edit_save_set">Save Set</button>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    Are you sure you want to delete this set?
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-regular" data-bs-dismiss="modal" id="confirm_delete">Yes</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

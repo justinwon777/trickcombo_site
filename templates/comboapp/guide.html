@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Guide
+{% endblock %}
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col">
+            <h4 class="h-info">Getting Started</h4>
+            <p>
+                <p style="font-size: 20px; font-weight: bold; display: inline-block">Make an account to create and save custom trick sets.</p>
+                <p style="display: inline-block">Also then you can save combos, too.</p>
+                <p>Otherwise, these are the preset tricks you can use:</p>
+                <ul>
+                    <li>All Tricks: {{count}} so far.</li>
+                    <li>Loopkicks Top 10 Fundamental Tricks: Taken from <a href="https://www.loopkickstricking.com/learn-tricking/top-10-fundamental-tricks-to-learn/" style="text-decoration: none" target="_blank" rel="noopener">here</a>. Cartwheel, tornado, scoot, skip hook, butterfly kick, aerial, front tuck, gainer, raiz, back tuck.</li>
+                    <li>Vertical Kicks: Just the vertical kicks, but without crazy variations</li>
+                    <li>Common: Tricks you actually might have seen before.</li>
+                    <li>Challenge: No easy tricks.</li>
+                </ul>
+                Using the <strong>common</strong> trick set (78 tricks) and max combo length of 3, there are <strong>75,536,189</strong> unique combos possible.
+            </p>
+            <h4 class="h-info">Combo Structure</h4>
+            <p>
+                The basic parts of the combo structure used on this site are tricks, stances, and transitions. The Loopkicks <a href="https://www.loopkickstricking.com/tricktionary" target="_blank" rel="noopener">tricktionary</a> has definitions on all the tricks, stances, and transitions used here.
+                <ul>
+                    <li>Trick: The move itself plus any variations. (Ex. back tuck, scoot, gainer scissor)</li>
+                    <li>Stance: The landing stance of the trick. There are four main ones: complete, hyper, mega, and semi.</li>
+                    <li>Transition: The movement from a stance to the next trick. (Ex. pop, vanish, swingthrough)</li>
+                </ul>
+                Every trick has a landing stance, so a trick + stance can be considered the building blocks of a combo, with transitions connecting the blocks together. Every combo starts and ends with a trick + stance, and each new trick needs a transition from the previous stance. Combos follow a pattern like the following diagram.
+                <br><br>
+                <img src="{% static 'combo.png' %}" alt="Combo Structure" width="600" class="info">
+                <br><br>
+                Combo length is determined by how many tricks are in the combo. For the diagram above, length would be 3.
+                <br><br>
+                You'll notice the first trick often doesn't say what setup to use, like if it says "full", does that mean "scoot pop full" or "standing pop full"? That's because setup moves are tricks themselves. Some like scoot are in the list, but some like standing and step are way too simple and probably unnecessary to add. If you need another move to setup into the first trick just do whatever you prefer.
+                <br><br>
+                Some "setups" are inferred like cheat and j-step. Ex. tornado vanish (cheat) 720, tornado redirect (j-step) gainer
+            </p>
+            <h4 class="h-info">Combo Generator</h4>
+            <p>
+                The combo generator is where you can generate random combos given some parameters.
+                <ul>
+                    <li>Select your desired trick set from one of the presets or one of your saved sets.</li>
+                    <li>Select the stances and transitions that you desire, whether it's all or one of each.</li>
+                    <li>Combo length determines how many tricks will be in the combo.</li>
+                    <li>Starting trick option means combos will always start with the selected trick.</li>
+                    <li>Finishing trick option means combos will always finish with the selected trick.</li>
+                    <li>Spin limit removes tricks with higher spins than the chosen number. Note that spins here is counted by in-air spins, so something like tornado has 0 spins. Also, half spins are rounded down (Ex. 1.5 = 1 spin) and flips aren't counted as spins.</li>
+                    <li>"No valid combos" means the algorithm wasn't able to find any possible combos from the parameters you selected.</li>
+                    <li>The full combo is shown below the copy and save buttons and it includes stance labels that were removed for reader-friendly purposes.</li>
+                    <li>In the full combo, you can select parts of the combo and click regenerate to replace those parts with something else.</li>
+                </ul>
+                <strong>Tip to get easier combos: </strong>Select the complete stance only, and maybe hyper. Mega and semi can increase the difficulty of generated combos significantly.
+            </p>
+            <h4 class="h-info">Combo Builder</h4>
+            <p>
+                The combo builder is where you can build your combos piece by piece. It follows the combo structure described above. Here you can also choose a trick set. Start by selecting a trick and a stance and clicking the add button to add them to the combo. If you want more tricks, add a transition so you can select another trick.
+            </p>
+            <p>
+                The same algorithm from the generator helps by showing which options are possible for your combo. When selecting a trick, only the stances that are possible will become available to select, and when selecting a stance, only the possible transitions will become available. When adding a transition, only the possible tricks from that transition will become available.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
