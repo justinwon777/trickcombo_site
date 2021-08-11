@@ -1,3 +1,5 @@
+# not being used
+
 class Trick:
     def __init__(self, name, takeoff, landing, transitions, stances, kick, vert=False):
         self.name = name

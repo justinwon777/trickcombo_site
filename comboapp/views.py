@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .v2 import generate, trick_sets, tricks_by_type, start, tricks, transitions, stances, short_name, string_to_list, spins, regenerate_combo, short_to_full, common_tricks_by_type
+from .generator import generate, trick_sets, tricks_by_type, start, tricks, transitions, stances, short_name, string_to_list, spins, regenerate_combo, short_to_full, common_tricks_by_type
 from .models import TrickSet
 
 

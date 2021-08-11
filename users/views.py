@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegister, UserUpdate, ProfileUpdate
 from django.contrib.auth.decorators import login_required
-from comboapp.v2 import tricks_by_type
+from comboapp.generator import tricks_by_type
 from comboapp.models import TrickSet, Combo, Trick
 from django.http import HttpResponse, JsonResponse
 

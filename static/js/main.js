@@ -833,9 +833,7 @@ $(document).ready(function(){
             }
         });
     })
-//    $('#full').on('change', 'input.full_part', function(){
-//        $('input.full_part').not(this).prop('checked', false)
-//    })
+    
     $('#load_combo').click(function(){
         var myModal = new bootstrap.Modal(document.getElementById('combo_modal'), {
           keyboard: false
