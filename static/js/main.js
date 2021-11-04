@@ -945,7 +945,6 @@ $(document).ready(function(){
         myModal.show()
     })
     $('#animation').click(function(){
-        console.log("hh")
         var myModal = new bootstrap.Modal(document.getElementById('animation_modal'), {
           keyboard: false
         })

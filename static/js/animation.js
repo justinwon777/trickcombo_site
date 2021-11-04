@@ -1,11 +1,9 @@
 import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js';
-import { FBXLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/FBXLoader.js';
 import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
 
-let camera, scene, renderer, model;
+let camera, scene, renderer, model, mixer, rootBone, lastPos, refPos, id;
 const clock = new THREE.Clock();
-let mixer;
 
 window.createAnimation = function() {
     const body = document.querySelector('#animation-body')
@@ -13,17 +11,23 @@ window.createAnimation = function() {
         body.innerHTML = '';
     }
     init();
-//    animate();
+}
+
+window.deleteAnimation = function() {
+    const body = document.querySelector('#animation-body')
+    cancelAnimationFrame(id)
+    if (body.hasChildNodes()) {
+        body.innerHTML = '';
+    }
 }
 
 function init() {
-
     const container = document.querySelector('#animation-body');
     const width = window.innerWidth - 30;
     const height = window.innerHeight - 170;
 
     const camera = new THREE.PerspectiveCamera( 50, width / height, 1, 7000);
-    camera.position.set(100, 200, 300)
+    camera.position.set(400, 400, 400)
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xa0a0a0 );
@@ -63,38 +67,43 @@ function init() {
 
     // model
     const loader = new GLTFLoader();
-    loader.load( '../static/mixamo2.gltf', function ( gltf ) {
+    loader.load( '../static/mixamo3.gltf', function ( gltf ) {
         model = gltf.scene
+        let skeleton = new THREE.SkeletonHelper(model)
+        rootBone = skeleton.root.children[0].children[0]
+        refPos = rootBone.position.clone()
+        lastPos = rootBone.position.clone()
+        model.position.y = 90
+        model.position.z = -400
         scene.add(model)
         mixer = new THREE.AnimationMixer( model );
-        const action1 = mixer.clipAction( gltf.animations[ 3 ] );
-        const action2 = mixer.clipAction( gltf.animations[ 2 ] );
-        const action3 = mixer.clipAction( gltf.animations[ 5 ] );
-//        THREE.AnimationUtils.makeClipAdditive(action2._clip)
-
+        const action1 = mixer.clipAction( gltf.animations[ 0 ] );
+        const action2 = mixer.clipAction( gltf.animations[ 1 ] );
+        // const action3 = mixer.clipAction( gltf.animations[ 2 ] );
+        // action1.play()
         action1
             .setLoop(THREE.LoopOnce)
             .play();
         setTimeout(function() {
             action2
-                .crossFadeFrom(action1, 1, true)
+                .crossFadeFrom(action1, .25, true)
                 .setLoop(THREE.LoopOnce)
                 .play()
-        }, action1._clip.duration * 1000 - 500)
+        }, action1._clip.duration * 1000 - 250)
 
-//        setTimeout(function() {
-//            action3
-//                .crossFadeFrom(action2, 1, true)
-//                .setLoop(THREE.LoopOnce)
-//                .play()
-//        }, action1._clip.duration * 1000 - 500 + action2._clip.duration * 1000 - 500)
+    //    setTimeout(function() {
+    //        action3
+    //            .crossFadeFrom(action2, .25, true)
+    //            .setLoop(THREE.LoopOnce)
+    //            .play()
+    //    }, action1._clip.duration * 1000 - 500 + action2._clip.duration * 1000 - 500)
 
-//        gltf.traverse( function ( child ) {
-//            if ( child.isMesh ) {
-//                child.castShadow = true;
-//                child.receiveShadow = true;
-//            }
-//        } );
+    //    gltf.traverse( function ( child ) {
+    //        if ( child.isMesh ) {
+    //            child.castShadow = true;
+    //            child.receiveShadow = true;
+    //        }
+    //    } );
     } );
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -110,7 +119,24 @@ function init() {
     function animate() {
         const delta = clock.getDelta();
         if ( mixer ) mixer.update( delta );
-        requestAnimationFrame( animate );
+        
+        if (rootBone != undefined) {
+            const vel = rootBone.position.clone();
+            vel.sub(lastPos).multiplyScalar(0.01);
+            vel.y = 0;
+
+            vel.applyQuaternion(model.quaternion);
+            
+            if(vel.lengthSq() < 0.1 * 0.1){
+                model.position.add(vel.multiplyScalar(100));
+            }
+
+            lastPos.copy(rootBone.position);
+            rootBone.position.z = refPos.z;
+            rootBone.position.x = refPos.x;
+        }
+        
+        id = requestAnimationFrame( animate );
         renderer.render( scene, camera );
     }
     requestAnimationFrame( animate );
