@@ -22,7 +22,7 @@ TrickCombo is a site for exploring tricking combos in ways you may have never th
 - JavaScript, jQuery, Bootstrap, HTML, and CSS frontend
 - PostgreSQL
 - Heroku for deployment
-- Newer version uses Vue.js for frontend (work in progress)
+- Newer version uses Vue.js frontend and Django REST backend (work in progress)
 
 
 ## Quick tricking theory for non-trickers
