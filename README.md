@@ -13,7 +13,7 @@ TrickCombo is a site for exploring tricking combos in ways you may have never th
 - Combo builder that lets you see all possible combinations and make your own combos from scratch
 
 ### Technical Highlights
-- Bidirectional, cyclic graph implemented with dicitionaries using data parsed from a spreadsheet
+- Bidirectional, cyclic graph implemented with dictionaries using data parsed from a spreadsheet
 - Depth-first search algorithm used to traverse graphs forwards, backwards, and finish incomplete paths
 - Full stack, dynamic website created with the tech stack below
 
@@ -34,4 +34,4 @@ The key points for the generator are its customizability and use of a graph trav
 
 ## Combo Builder
 
-The buidler serves as a rudimentary visualization of the graph. Users can select tricks and the builder shows all possibilties that can come after it, letting the user create a combo how they want.
+The buidler serves as a rudimentary visualization of the graph. Users can select tricks and the builder shows all possibilties that can come after it, letting the user pick every part of the combo.
